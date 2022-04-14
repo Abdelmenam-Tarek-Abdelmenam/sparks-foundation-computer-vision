@@ -24,7 +24,7 @@ class Detector:
     def showImage(self,img):
         window_name = 'image'
         cv.imshow(window_name, img)
-        cv.waitKey(1)
+        cv.waitKey(0)
 
 
     def detect(self,img0):
@@ -42,7 +42,7 @@ class Detector:
         outputs = np.vstack(outputs)
 
         self.post_process(img, outputs, CONFICENCE_LEVEL)
-        self.showImage(img)
+        return img
 
     def post_process(self,img, outputs, conf):
         H, W = img.shape[:2]
@@ -50,7 +50,6 @@ class Detector:
         boxes = []
         confidences = []
         classIDs = []
-        print("detect {} object in photo".format(len(outputs)))
         for output in outputs:
             scores = output[5:]
             classID = np.argmax(scores)
@@ -71,6 +70,6 @@ class Detector:
                 (w, h) = (boxes[i][2], boxes[i][3])
                 color = [int(c) for c in self.colors[classIDs[i]]]
                 cv.rectangle(img, (x, y), (x + w, y + h), color, 2)
-                text = "{}: {:.4f}".format(self.classes[classIDs[i]], confidences[i])
-                cv.putText(img, text, (x, y - 1), cv.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+                text = "{}: {:.1f}%".format(self.classes[classIDs[i]], confidences[i]*100)
+                cv.putText(img, text, (x, y - 5), cv.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
