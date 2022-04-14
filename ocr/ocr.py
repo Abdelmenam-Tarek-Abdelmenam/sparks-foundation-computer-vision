@@ -2,7 +2,7 @@ import pytesseract
 import cv2 as cv 
 from pytesseract import Output
 
-TRESHOLD = 25 
+TRESHOLD = 10 
 pytesseract.pytesseract.tesseract_cmd = 'E:/ocr/tesseract.exe'  
 
 def drowBoxs(img):
